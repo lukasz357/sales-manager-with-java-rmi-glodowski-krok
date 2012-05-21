@@ -1,0 +1,5 @@
+Dezodorant  10000 5
+Krem         5000 2
+Szampon     25000 5
+Perfumy      8000 3
+Lakier       7000 1
