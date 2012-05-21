@@ -1,0 +1,51 @@
+Nodes:
+A
+B
+C
+D
+E
+F
+G
+H
+I
+J
+K
+L
+M
+N
+O
+P
+Q
+R
+S
+T
+Edges:
+A B 5 4
+A I 30 5
+A N 100 1
+B C 8 10
+B D 9 12
+B H 10 3
+H J 7 1
+H G 9 5
+D E 15 15
+D F 14 12
+E F 6 4
+F L 6 9
+G F 20 2
+L M 6 9
+L P 11 4
+L K 10 1
+I J 5 16
+J N 9 11
+J K 8 3
+K O 10 8
+K P 9 13
+P Q 8 4
+P T 12 2
+M Q 8 7
+N S 2 3
+N O 4 3
+O P 12 1
+S R 9 2
+R T 15 13
