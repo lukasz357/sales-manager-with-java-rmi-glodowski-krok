@@ -5,8 +5,9 @@
 
 package salesmanager;
 
-import salesmanager.GenericMap.GenericCity;
 import java.util.ArrayList;
+
+import salesmanager.GenericMap.GenericCity;
 
 /**
  *

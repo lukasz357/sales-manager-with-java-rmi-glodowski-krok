@@ -5,7 +5,6 @@
 
 package salesmanager.GenericMap;
 
-import salesmanager.GenericMap.GenericCity;
 
 /**
  *
