@@ -1,17 +1,22 @@
 package salesmanager;
 
-import salesmanager.GenericMap.GenericMap;
-import salesmanager.Map.*;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import salesmanager.GenericMap.GenericCity;
+import salesmanager.GenericMap.GenericMap;
+import salesmanager.Map.City;
 
 /*
  * To change this template, choose Tools | Templates
@@ -27,7 +32,11 @@ public class DataBase {
     private Statement stat;
 
     public DataBase() {
-    	Class.forName("org.sqlite.JDBC");
+    	try {
+			Class.forName("org.sqlite.JDBC");
+		} catch (ClassNotFoundException e) {
+			System.out.println("Problem z połączeniem do bazy danych");
+		}
         try {
             conn = DriverManager.getConnection("jdbc:sqlite:SalesManagerBase.db");
             stat = conn.createStatement();
