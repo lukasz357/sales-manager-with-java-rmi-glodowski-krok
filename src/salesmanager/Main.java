@@ -4,14 +4,19 @@
  */
 package salesmanager;
 
-import salesmanager.GenericMap.GenericMap;
 import java.io.IOException;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
-import salesmanager.Map.*;
-import salesmanager.FileParsers.MapParser.FileFormatException;
-import salesmanager.FileParsers.*;
+
+import salesmanager.FileParsers.ArgsParser;
 import salesmanager.FileParsers.ArgsParser.BadArgsException;
+import salesmanager.FileParsers.MapParser;
+import salesmanager.FileParsers.MapParser.FileFormatException;
+import salesmanager.FileParsers.OrdersParser;
+import salesmanager.FileParsers.ProductsParser;
+import salesmanager.GenericMap.GenericMap;
+import salesmanager.Map.City;
 
 /**
  *

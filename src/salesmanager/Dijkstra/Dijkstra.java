@@ -1,6 +1,8 @@
 package salesmanager.Dijkstra;
 
-import salesmanager.GenericMap.*;
+import salesmanager.GenericMap.GenericCity;
+import salesmanager.GenericMap.GenericMap;
+import salesmanager.GenericMap.GenericRoute;
 import salesmanager.Map.City;
 import salesmanager.Map.Route;
 

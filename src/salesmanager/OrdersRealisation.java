@@ -4,15 +4,18 @@
  */
 package salesmanager;
 
-import salesmanager.GenericMap.GenericMap;
-import salesmanager.GenericMap.GenericCity;
-import salesmanager.GeneticAlgorithm.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+
 import salesmanager.Dijkstra.Dijkstra;
-import salesmanager.Map.*;
 import salesmanager.Dijkstra.Dijkstra.NodeDoesNotExist;
+import salesmanager.GenericMap.GenericCity;
+import salesmanager.GenericMap.GenericMap;
+import salesmanager.GeneticAlgorithm.Costs;
+import salesmanager.GeneticAlgorithm.GeneticAlg;
+import salesmanager.GeneticAlgorithm.Path;
+import salesmanager.Map.City;
 
 /**
  *

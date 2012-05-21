@@ -2,6 +2,7 @@ package salesmanager.Dijkstra;
 
 import java.util.Collection;
 import java.util.PriorityQueue;
+
 import salesmanager.GenericMap.GenericCity;
 import salesmanager.Map.City;
 import salesmanager.Map.Route;

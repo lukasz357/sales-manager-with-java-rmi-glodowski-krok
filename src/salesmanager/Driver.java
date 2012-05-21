@@ -5,7 +5,6 @@
 
 package salesmanager;
 
-import java.util.ArrayList;
 
 /**
  *

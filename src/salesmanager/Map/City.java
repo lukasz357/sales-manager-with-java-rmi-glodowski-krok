@@ -1,7 +1,8 @@
 package salesmanager.Map;
 
-import salesmanager.Dijkstra.Dijkstra;
 import java.util.ArrayList;
+
+import salesmanager.Dijkstra.Dijkstra;
 import salesmanager.GenericMap.GenericCity;
 
 public class City implements Comparable<City>, GenericCity<City, Route> {
