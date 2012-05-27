@@ -93,13 +93,13 @@ public class Worker {
         Dijkstra dAlg = new Dijkstra(map);
         k = new Costs(map.numberOfCities + 1);
         dAlg.search(map.getCityByID(1).getVal());
-        k.costs[1] = dAlg.getCosts();
-        k.lengths[1] = dAlg.getLengths();
+        k.setCost(1,dAlg.getCosts());
+        k.setLen(1, dAlg.getLengths());
         dAlg.resetData();
         for (City c : map.getAllCities()) {
             dAlg.search(c.getVal());
-            k.costs[c.getID()] = dAlg.getCosts();
-            k.lengths[c.getID()] = dAlg.getLengths();
+            k.setCost(c.getID(), dAlg.getCosts());
+            k.setLen(c.getID(), dAlg.getLengths());
             dAlg.resetData();
         }
 
@@ -130,8 +130,8 @@ public class Worker {
     private double policzDlTrasy(ArrayList<City> trasa, Costs k){
         double dl = 0;
         for(int i = 0; i<trasa.size()-1;i++)
-            dl+=k.lengths[trasa.get(i).getID()][trasa.get(i+1).getID()];
-        dl+=k.lengths[trasa.get(trasa.size()-1).getID()][trasa.get(0).getID()];
+            dl+=k.getCost(trasa.get(i).getID(), trasa.get(i+1).getID());
+        dl+=k.getCost(trasa.get(trasa.size()-1).getID(),trasa.get(0).getID());
         return dl;
     }
 
