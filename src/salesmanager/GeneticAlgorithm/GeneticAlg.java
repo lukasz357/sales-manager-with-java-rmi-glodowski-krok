@@ -11,6 +11,8 @@ package salesmanager.GeneticAlgorithm;
 import java.util.ArrayList;
 import java.util.Random;
 
+import salesmanager.Map.City;
+
 /**
  *
  * @author głodoś
@@ -33,6 +35,8 @@ public class GeneticAlg {
     private double sum;
     private int[] cities;
     public Costs k;
+    
+    private double bestLen;
 
     public GeneticAlg(int size, int[] cities, double mutationProp, double crossingProp, Costs k) {
         this.size = size;
@@ -79,10 +83,12 @@ public class GeneticAlg {
             generateRandomPopulation();
             while (generation < n) {
                 simulateGeneration();
+                //bestLen = policzDlTrasy(k);
             }
         }
         return bestEver;
     }
+   
 
     private void simulateGeneration() {
         generation++;
@@ -112,7 +118,7 @@ public class GeneticAlg {
         double temp;
         for (int i = 0; i < size; i++) {
             temp = (double) marks.get(i);
-            result[i] = (temp / sum) * 100;
+            result[i] = (temp / sum);
         }
         return result;
     }

@@ -104,9 +104,9 @@ public class Path {
     public double costOfPath(Costs k, int [] cities){
         int sum=0;
         for(int i=0;i<path.length-1;i++){
-            sum+=k.costs[cities[path[i]]][cities[path[i+1]]];
+            sum+=k.getCost(cities[path[i]], cities[path[i+1]]);
         }
-        sum+=k.costs[cities[path[path.length-1]]][cities[path[0]]];
+        sum+=k.getCost(cities[path[path.length-1]], cities[path[0]]);
         return sum;
     }
 

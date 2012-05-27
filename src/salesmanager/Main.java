@@ -28,14 +28,14 @@ public class Main {
     	CityMap m = readMap("graph.txt");
         Worker or = new Worker(m);
         // go(liczba_pokolen, liczebnosc_pokolenia
-        ArrayList<City> result = or.go(10, 10);
+        ArrayList<City> result = or.go(1000, 100);
         StringBuffer sb = new StringBuffer();
         for(City c : result){
         	if(sb.length()>0) sb.append(" -> ");
         	sb.append(c.getVal());
         }
         System.out.println(sb); 
-        System.out.println("Dlugosc: "+or.getTotalLength());
+        System.out.println("Laczny koszt: "+or.getTotalLength());
     }
     
     
