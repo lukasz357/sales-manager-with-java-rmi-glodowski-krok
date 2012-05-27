@@ -46,6 +46,7 @@ public class GeneticAlg {
         population = new ArrayList<Path>();
     }
 
+
     public void print() {
         System.out.println("Ostatnie pokolenie: ");
         printGeneration();

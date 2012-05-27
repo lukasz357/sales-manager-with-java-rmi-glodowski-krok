@@ -1,9 +1,7 @@
 package salesmanager.Dijkstra;
 
-import salesmanager.GenericMap.GenericCity;
-import salesmanager.GenericMap.GenericMap;
-import salesmanager.GenericMap.GenericRoute;
 import salesmanager.Map.City;
+import salesmanager.Map.CityMap;
 import salesmanager.Map.Route;
 
 /**
@@ -15,19 +13,19 @@ public class Dijkstra {
 
     public DijkstraPriorityQueue priorityQ = new DijkstraPriorityQueue();
     public static final double INFINITY = 999999;
-    public GenericCity<City, Route> startNode;
-    private GenericMap<City> g;
+    public City startNode;
+    private CityMap g;
 
-    public Dijkstra(GenericMap<City> g) {
+    public Dijkstra(CityMap g) {
         this.g = g;    
     }
 
     public void search(String startNode)throws NodeDoesNotExist {  
         prepareData(startNode);
         while (priorityQ.hasMore()) {
-            GenericCity<City, Route> n = this.priorityQ.remove();
-            for (GenericRoute e : n.getOutGoingRoutes()) {
-                GenericCity adjNode = e.getCity();
+            City n = priorityQ.remove();
+            for (Route e : n.getOutGoingRoutes()) {
+                City adjNode = e.getCity();
                 double newPossiblePathCost = calculateCost(e) + n.getDistance();
                 if (newPossiblePathCost < adjNode.getDistance()) {
                     adjNode.setDistance(newPossiblePathCost);
@@ -42,15 +40,15 @@ public class Dijkstra {
             throw new NodeDoesNotExist(startNode);
         this.startNode = g.getCity(startNode);
         this.startNode.setDistance(0);
-        priorityQ.add(g.getAllCities());
+        priorityQ.add(g.getAllCitiesCollection());
     }
 
-    public double calculateCost(GenericRoute e){
+    public double calculateCost(Route e){
         return e.getCost() + e.getLength();
     }
 
     public void resetData(){
-        for(GenericCity n : g.getAllCities()){
+        for(City n : g.getAllCitiesCollection()){
             n.setDistance(INFINITY);
         }
 
@@ -58,7 +56,7 @@ public class Dijkstra {
 
     public double[] getCosts(){
         double[] costs = new double[g.numberOfCities+1];
-        for(GenericCity c : g.getAllCities()){
+        for(City c : g.getAllCitiesCollection()){
             costs[c.getID()]=c.getDistance();
         }
         return costs;
@@ -66,7 +64,7 @@ public class Dijkstra {
 
     public double[] getLengths(){
         double[] lengths = new double[g.numberOfCities+1];
-        for(GenericCity c : g.getAllCities()){
+        for(City c : g.getAllCitiesCollection()){
             lengths[c.getID()]=c.getLength();
         }
         return lengths;

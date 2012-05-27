@@ -5,7 +5,6 @@
 
 package salesmanager.Map;
 
-import salesmanager.GenericMap.GenericRoute;
 
 
 /**
@@ -13,7 +12,7 @@ import salesmanager.GenericMap.GenericRoute;
  * @author głodoś
  */
 
-public final class Route implements GenericRoute{
+public final class Route{
 
     private City cityNext;
     private double cost;
