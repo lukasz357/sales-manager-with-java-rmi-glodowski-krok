@@ -3,9 +3,8 @@ package salesmanager.Map;
 import java.util.ArrayList;
 
 import salesmanager.Dijkstra.Dijkstra;
-import salesmanager.GenericMap.GenericCity;
 
-public class City implements Comparable<City>, GenericCity<City, Route> {
+public class City implements Comparable<City> {
 
     private ArrayList<Route> outGoingRoutes = new ArrayList<Route>();
     private String value;

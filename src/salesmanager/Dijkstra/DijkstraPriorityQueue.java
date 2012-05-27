@@ -3,9 +3,7 @@ package salesmanager.Dijkstra;
 import java.util.Collection;
 import java.util.PriorityQueue;
 
-import salesmanager.GenericMap.GenericCity;
 import salesmanager.Map.City;
-import salesmanager.Map.Route;
 
 /**
  *
@@ -14,7 +12,7 @@ import salesmanager.Map.Route;
 
 public class DijkstraPriorityQueue {
 
-    private PriorityQueue<GenericCity> pQueue = new PriorityQueue<GenericCity>();
+    private PriorityQueue<City> pQueue = new PriorityQueue<City>();
 
     public DijkstraPriorityQueue() {
     }
@@ -27,15 +25,15 @@ public class DijkstraPriorityQueue {
         pQueue.addAll(nodeCollection);
     }
 
-    public Boolean hasMore() {
+    public boolean hasMore() {
         return !pQueue.isEmpty();
     }
 
-    public GenericCity<City, Route> remove() {
+    public City remove() {
         return pQueue.remove();
     }
 
-    public void updateCityDistance(GenericCity n) {
+    public void updateCityDistance(City n) {
         pQueue.remove(n);
         pQueue.add(n);
     }
