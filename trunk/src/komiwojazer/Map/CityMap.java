@@ -1,4 +1,4 @@
-package salesmanager.Map;
+package komiwojazer.Map;
 
 import java.util.ArrayList;
 import java.util.Collection;

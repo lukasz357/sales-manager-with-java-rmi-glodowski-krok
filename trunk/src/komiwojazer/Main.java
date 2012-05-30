@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package salesmanager;
+package komiwojazer;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -12,10 +12,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.TreeMap;
 
-import salesmanager.FileParsers.ArgsParser.BadArgsException;
-import salesmanager.GeneticAlgorithm.Costs;
-import salesmanager.Map.City;
-import salesmanager.Map.CityMap;
+import komiwojazer.FileParsers.ArgsParser.BadArgsException;
+import komiwojazer.GeneticAlgorithm.Costs;
+import komiwojazer.Map.City;
+import komiwojazer.Map.CityMap;
+
 
 /**
  *

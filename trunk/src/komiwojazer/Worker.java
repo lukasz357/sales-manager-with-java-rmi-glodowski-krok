@@ -2,18 +2,19 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package salesmanager;
+package komiwojazer;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import salesmanager.Dijkstra.Dijkstra;
-import salesmanager.Dijkstra.Dijkstra.NodeDoesNotExist;
-import salesmanager.GeneticAlgorithm.Costs;
-import salesmanager.GeneticAlgorithm.GeneticAlg;
-import salesmanager.GeneticAlgorithm.Path;
-import salesmanager.Map.City;
-import salesmanager.Map.CityMap;
+import komiwojazer.Dijkstra.Dijkstra;
+import komiwojazer.Dijkstra.Dijkstra.NodeDoesNotExist;
+import komiwojazer.GeneticAlgorithm.Costs;
+import komiwojazer.GeneticAlgorithm.GeneticAlg;
+import komiwojazer.GeneticAlgorithm.Path;
+import komiwojazer.Map.City;
+import komiwojazer.Map.CityMap;
+
 
 /**
  *

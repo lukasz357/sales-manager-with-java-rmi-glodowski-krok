@@ -1,4 +1,4 @@
-package salesmanager.FileParsers;
+package komiwojazer.FileParsers;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;

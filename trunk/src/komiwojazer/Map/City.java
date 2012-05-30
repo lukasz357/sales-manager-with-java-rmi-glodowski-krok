@@ -1,8 +1,9 @@
-package salesmanager.Map;
+package komiwojazer.Map;
 
 import java.util.ArrayList;
 
-import salesmanager.Dijkstra.Dijkstra;
+import komiwojazer.Dijkstra.Dijkstra;
+
 
 public class City implements Comparable<City> {
 

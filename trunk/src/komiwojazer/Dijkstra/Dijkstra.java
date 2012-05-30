@@ -1,8 +1,8 @@
-package salesmanager.Dijkstra;
+package komiwojazer.Dijkstra;
 
-import salesmanager.Map.City;
-import salesmanager.Map.CityMap;
-import salesmanager.Map.Route;
+import komiwojazer.Map.City;
+import komiwojazer.Map.CityMap;
+import komiwojazer.Map.Route;
 
 /**
  *
