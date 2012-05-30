@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package salesmanager.GeneticAlgorithm;
+package komiwojazer.GeneticAlgorithm;
 
 /**
  *

@@ -6,12 +6,13 @@
 /*
  * Pomysł zaczerpnięty z http://www.eioba.pl/a71530/algorytmy_genetyczne
  */
-package salesmanager.GeneticAlgorithm;
+package komiwojazer.GeneticAlgorithm;
 
 import java.util.ArrayList;
 import java.util.Random;
 
-import salesmanager.Map.City;
+import komiwojazer.Map.City;
+
 
 /**
  *

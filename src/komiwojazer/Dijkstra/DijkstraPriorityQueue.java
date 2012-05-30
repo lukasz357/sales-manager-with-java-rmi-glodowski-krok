@@ -1,9 +1,10 @@
-package salesmanager.Dijkstra;
+package komiwojazer.Dijkstra;
 
 import java.util.Collection;
 import java.util.PriorityQueue;
 
-import salesmanager.Map.City;
+import komiwojazer.Map.City;
+
 
 /**
  *
