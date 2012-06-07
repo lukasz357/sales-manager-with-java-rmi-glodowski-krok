@@ -138,7 +138,7 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
 	@Override
 	public List<Path> register(int clientID) throws RemoteException {
 		// klient zapisuje sie do kolejki
-		clientQueue.add(clientID);
+		//clientQueue.add(clientID);
 		try {
 			if(clientRegistry.size() == 0){
 				//jesli jest pierwszy to obudz watek
@@ -146,13 +146,13 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
 					notifier.notify();
 				}
 			}
-			// i czeka
+			// czekaj
 			synchronized (lock) {
 				lock.wait();
 			}
 			// dostal pozwolenie to teraz zapisuje sie
 			// i w zamian dostaje pokolenie
-			clientQueue.remove(new Integer(clientID));
+			//clientQueue.remove(new Integer(clientID));
 			clientRegistry.add(clientID);
 			return currentGeneration;
 		} catch (InterruptedException e) {
