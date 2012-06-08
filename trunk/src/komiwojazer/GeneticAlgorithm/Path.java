@@ -4,6 +4,7 @@
  */
 package komiwojazer.GeneticAlgorithm;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -11,11 +12,14 @@ import java.util.Random;
  *
  * @author głodoś
  */
-public class Path {
+public class Path implements Comparable<Path>, Serializable{
 
-    public int[] path;
+	private static final long serialVersionUID = 5648143911804974540L;
+	public int[] path;
     public static int length;
-    public static Random rand;
+    public double cost;
+    public double mark;
+    //public static Random rand;
 
     public Path(int numOfCities) {
         path = new int[numOfCities];
@@ -24,10 +28,19 @@ public class Path {
             path[i] = i+1;
         }
         length = numOfCities;
-        rand = new Random();
+        //rand = new Random();
+    }
+    
+    public void updateCost(Costs c, int[] cities){
+    	cost = 0;
+        for(int i=0;i<path.length-1;i++){
+            cost+=c.getCost(path[i], path[i+1]);
+        }
+        cost+=c.getCost(path[path.length-1], path[0]);
     }
 
     public Path random() {
+    	Random rand = new Random();
         int randomVal = 0;
         for (int i = 0; i < path.length; i++) {
             path[i] = 0;
@@ -43,6 +56,7 @@ public class Path {
     }
 
     public static Path[] cross(Path s1, Path s2) {
+    	Random rand = new Random();
         Path children[] = new Path[2];
         children[0] = s1.clonePath();
         children[1] = s2.clonePath();
@@ -85,6 +99,7 @@ public class Path {
     }
 
     public void mutate() {
+    	Random rand = new Random();
         int p1 = rand.nextInt(path.length-2) + 1, p2;
         do{
              p2 = rand.nextInt(path.length-2) + 1;
@@ -101,16 +116,14 @@ public class Path {
         return result;
     }
 
-    public double costOfPath(Costs k, int [] cities){
-        int sum=0;
-        for(int i=0;i<path.length-1;i++){
-            sum+=k.getCost(cities[path[i]], cities[path[i+1]]);
-        }
-        sum+=k.getCost(cities[path[path.length-1]], cities[path[0]]);
-        return sum;
-    }
 
     public int getElem(int pos) {
         return path[pos];
     }
+
+
+	@Override
+	public int compareTo(Path o) {
+		return (int) (cost - o.cost);
+	}
 }
