@@ -101,16 +101,17 @@ public class MapUtil {
     private void createCostArray(CityMap map) throws NodeDoesNotExist {
         Dijkstra dAlg = new Dijkstra(map);
         k = new Costs(map.numberOfCities + 1);
-        dAlg.search(map.getCityByID(1).getVal());
-        k.setCost(1,dAlg.getCosts());
-        k.setLen(1, dAlg.getLengths());
-        dAlg.resetData();
+        //dAlg.search(map.getCityByID(1).getVal());
+        //k.setCost(1,dAlg.getCosts());
+        //k.setLen(1, dAlg.getLengths());
+        //dAlg.resetData();
         for (City c : map.getAllCities()) {
             dAlg.search(c.getVal());
             k.setCost(c.getID(), dAlg.getCosts());
-            k.setLen(c.getID(), dAlg.getLengths());
+            //k.setLen(c.getID(), dAlg.getLengths());
             dAlg.resetData();
         }
+        k.print();
 
     }
 

@@ -8,10 +8,13 @@ import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.RMISecurityManager;
 import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.rmi.server.RMIClientSocketFactory;
 import java.rmi.server.RMIServerSocketFactory;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Stack;
 import java.util.TreeMap;
@@ -36,9 +39,8 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
 	private MapUtil mu;
 
 	private List<Integer> clientRegistry;
-	private List<Integer> clientQueue;
 
-	private Path actualBest;
+	private Path actualBest, bestEver, actualWorst, worstEver;
 	private List<Path> currentGeneration;
 
 
@@ -49,17 +51,17 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
 
 	public Server() throws RemoteException {
 		super();
-		init();
+		//init();
 	}
 
 	public Server(int port, RMIClientSocketFactory csf, RMIServerSocketFactory ssf) throws RemoteException {
 		super(port, csf, ssf);
-		init();
+		//init();
 	}
 
 	public Server(int port) throws RemoteException {
 		super(port);
-		init();
+		//init();
 	}
 
 	private void init() {
@@ -72,7 +74,9 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
 		nodeNumbers = mu.getNodeNumbers();
 		currentGeneration = new ArrayList<Path>();
 		for (int i = 0; i < populationCount; i++) {
-			currentGeneration.add(new Path(nodeNumbers.length).random());
+			Path p = new Path(map.numberOfCities).random();
+			p.updateCost(mu.getCostArray(), nodeNumbers);
+			currentGeneration.add(p);
 		}
 		new Session().start();
 	}
@@ -133,6 +137,7 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
 
 	public void setMap(CityMap m) {
 		map = m;
+		init();
 	}
 
 	@Override
@@ -146,6 +151,7 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
 					notifier.notify();
 				}
 			}
+			p("Klient "+clientID+" chce sie polaczyc");
 			// czekaj
 			synchronized (lock) {
 				lock.wait();
@@ -154,6 +160,7 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
 			// i w zamian dostaje pokolenie
 			//clientQueue.remove(new Integer(clientID));
 			clientRegistry.add(clientID);
+			p("Klient "+clientID+" podlaczony");
 			return currentGeneration;
 		} catch (InterruptedException e) {
 			return null;
@@ -169,25 +176,30 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
 		synchronized (notifier) {
 			notifier.notify();
 		}
+		p("Klient "+clientID+" zglosil wynik");
 		// czekaj
 		try {
 			synchronized (lock) {
 				lock.wait();
 			}
+			p("Klient "+clientID+" wraca do obliczen");
 			return currentGeneration;
 		} catch (InterruptedException e) {
 			return null;
 		}
 	}
+	
+	//to jest watek ktory zarzadza klientami
 
 	class Session extends Thread {
 		public void run() {
 			try {
 				int handledCount = 0;
 				while (true) {
-					synchronized (notifier) {
-						notifier.wait();
-					}
+					if(clientResults.isEmpty())
+						synchronized (notifier) {
+							notifier.wait();
+						}
 					
 					if(clientRegistry.size()>0){
 						//zbierz aktualne wyniki od klientów
@@ -203,6 +215,14 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
 						//jesli od wszystkich zebrane
 						//uzupelnij liste jesli sa braki
 						assertSize(currentGeneration);
+						Collections.sort(currentGeneration);
+						actualBest = currentGeneration.get(0);
+						if(bestEver==null || actualBest.cost<bestEver.cost)
+							bestEver = actualBest;
+						actualWorst = currentGeneration.get(currentGeneration.size()-1);
+						if(worstEver==null || actualWorst.cost>worstEver.cost)
+							worstEver = actualWorst;
+						printBestPath();
 						handledCount = 0;
 						//obudz czekajacych klientow
 						synchronized (lock) {
@@ -219,26 +239,39 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
 	
 	private void assertSize(List<Path> list){
 		while(list.size()<populationCount){
-			list.add(new Path(nodeNumbers.length).random());
+			Path p = new Path(map.numberOfCities).random();
+			p.updateCost(costArray, nodeNumbers);
+			list.add(p);
 		}
 	}
 	
+	private void printBestPath(){
+		System.out.println("Najlepszy koszt w sesji: "+actualBest.cost);
+		System.out.println("Najlepszy do tej pory: "+bestEver.cost);
+		System.out.println("Najgorszy koszt w sesji: "+actualWorst.cost);
+		System.out.println("Najgorszy do tej pory: "+worstEver.cost);
+	}
 	
 
 	public static void main(String[] args) {
 		if (System.getSecurityManager() == null) {
 			System.setSecurityManager(new RMISecurityManager());
 		}
+		//System.setProperty("java.security.policy", "permissions");
 		try {
-			Server s = new Server(7878);
+			Server s = new Server(9999);
 			s.setCrossProbability(0.6f);
 			s.setMutationProbability(0.03f);
 			s.setGenerationsCount(1000);
-			s.setPopulationCount(10000);
+			s.setPopulationCount(1000);
 			CityMap m = readMap("graph.txt");
 			s.setMap(m);
-			Naming.rebind("//localhost:7878/ParalellGeneticServer", s);
-			System.out.println("Server started on port 7878");
+//			Server stub =
+//	                (Server) UnicastRemoteObject.exportObject(s, 9999);
+	            Registry registry = LocateRegistry.createRegistry(1099);
+	            registry.rebind("ParallelGeneticServer", s);
+			//Naming.rebind("//localhost:9999/, s);
+			System.out.println("Server started on port 9999");
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		} catch (MalformedURLException e) {
@@ -277,6 +310,7 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
 				if (line.length != 4)
 					throw new FileFormatException(fileLine, "Bledna ilosc danych. Wymagane 4.");
 				nodes.get(line[0]).AddOutgoingRoute(nodes.get(line[1]), Integer.parseInt(line[2]), Integer.parseInt(line[3]));
+				nodes.get(line[1]).AddOutgoingRoute(nodes.get(line[0]), Integer.parseInt(line[2]), Integer.parseInt(line[3]));
 			}
 		}
 		in.close();
@@ -288,6 +322,10 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
 		public FileFormatException(int line, String message) {
 			super("Blad struktury pliku w linii " + line + ": " + message);
 		}
+	}
+	
+	public static void p(String s){
+		System.out.println(s);
 	}
 
 }
