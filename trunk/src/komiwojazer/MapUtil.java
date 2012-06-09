@@ -10,7 +10,6 @@ import java.util.List;
 import komiwojazer.Dijkstra.Dijkstra;
 import komiwojazer.Dijkstra.Dijkstra.NodeDoesNotExist;
 import komiwojazer.GeneticAlgorithm.Costs;
-import komiwojazer.GeneticAlgorithm.GeneticAlg;
 import komiwojazer.GeneticAlgorithm.Path;
 import komiwojazer.Map.City;
 import komiwojazer.Map.CityMap;
@@ -137,6 +136,7 @@ public class MapUtil {
         return cityTab;
     }
     
+    @SuppressWarnings("unused")
     private double policzDlTrasy(ArrayList<City> trasa, Costs k){
         double dl = 0;
         for(int i = 0; i<trasa.size()-1;i++)
