@@ -1,14 +1,10 @@
 package komiwojazer.rmi;
 
-import java.net.MalformedURLException;
-import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RMISecurityManager;
-import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
-import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -20,7 +16,7 @@ public class Client {
 	private final int clientID;
 	
 	private ServerInterface server;
-	private int generationsCount;
+	private int tourGenerationCount;
 	private int populationCount;
 	
 	private Costs costArray;
@@ -29,7 +25,7 @@ public class Client {
 	private float mutationProp, crossingProp;
 	public Client(ServerInterface  s) throws RemoteException{
 		this.server = s;
-		generationsCount = s.getGenerationsCount();
+		tourGenerationCount = s.getGenerationsCount()/s.getTourCount();
 		populationCount = s.getPopulationCount();
 		costArray = s.getCostArray();
 		nodes = s.getNodeNumbers();
@@ -44,11 +40,11 @@ public class Client {
 			
 			population = server.register(clientID);	
 			//p("Klient "+clientID+" laczy sie z serwerem");
-			while(true){
+			while(population != null){
 				//p("Klient "+clientID+" rozpoczyna obliczenia");
 				GeneticAlg ga = new GeneticAlg(populationCount, nodes, mutationProp, crossingProp, costArray);
 				ga.setInitialPopulation(population);
-				ga.simulateNGenerations(generationsCount);
+				ga.simulateNGenerations(tourGenerationCount);
 				List<Path> result = ga.getPopulation();
 				//Collections.sort(result);
 				//p("Klient "+clientID+" zwraca wynik");
@@ -66,7 +62,7 @@ public class Client {
 		try {
 			Registry registry = LocateRegistry.getRegistry(1099);
 			ServerInterface server = (ServerInterface) registry.lookup(name);
-			new Client( server).start();
+			new Client(server).start();
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		} catch (NotBoundException e) {

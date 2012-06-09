@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.rmi.Naming;
 import java.rmi.RMISecurityManager;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -30,8 +29,9 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
 	private static final long serialVersionUID = -2065432534190043743L;
 
 	private float crossProb, mutateProb;
-	private int generationsCount, populationCount;
-
+	private int generationsCount, populationCount, tourCount;
+	
+	private int counter = 0;
 	private Costs costArray;
 	private int[] nodeNumbers;
 
@@ -73,7 +73,7 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
 		costArray = mu.getCostArray();
 		nodeNumbers = mu.getNodeNumbers();
 		currentGeneration = new ArrayList<Path>();
-		for (int i = 0; i < populationCount; i++) {
+		for (int i = 0; i <populationCount; i++) {
 			Path p = new Path(map.numberOfCities).random();
 			p.updateCost(mu.getCostArray(), nodeNumbers);
 			currentGeneration.add(p);
@@ -139,6 +139,14 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
 		map = m;
 		init();
 	}
+	
+	public int getTourCount() throws RemoteException{
+		return tourCount;
+	}
+
+	public void setTourCount(int tourCount) {
+		this.tourCount = tourCount;
+	}
 
 	@Override
 	public List<Path> register(int clientID) throws RemoteException {
@@ -182,8 +190,14 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
 			synchronized (lock) {
 				lock.wait();
 			}
-			p("Klient "+clientID+" wraca do obliczen");
-			return currentGeneration;
+			if(counter == tourCount) { //jak wszystkie tury przejdzie
+				return null;
+			}
+			else {
+				p("Klient "+clientID+" wraca do obliczen");
+				return currentGeneration;
+			}
+				
 		} catch (InterruptedException e) {
 			return null;
 		}
@@ -224,6 +238,7 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
 							worstEver = actualWorst;
 						printBestPath();
 						handledCount = 0;
+						counter++;
 						//obudz czekajacych klientow
 						synchronized (lock) {
 							lock.notifyAll();
@@ -262,7 +277,8 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
 			Server s = new Server(9999);
 			s.setCrossProbability(0.6f);
 			s.setMutationProbability(0.03f);
-			s.setGenerationsCount(1000);
+			s.setGenerationsCount(10000); // Całkowita liczba pokoleń
+			s.setTourCount(10);           // liczba tur - na ile dzielona jest liczba pokoleń
 			s.setPopulationCount(1000);
 			CityMap m = readMap("graph.txt");
 			s.setMap(m);
@@ -319,6 +335,8 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
 	}
 
 	static class FileFormatException extends IOException {
+		private static final long serialVersionUID = -3306760553607322125L;
+
 		public FileFormatException(int line, String message) {
 			super("Blad struktury pliku w linii " + line + ": " + message);
 		}
