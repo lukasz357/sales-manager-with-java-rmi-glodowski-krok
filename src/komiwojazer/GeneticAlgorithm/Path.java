@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package komiwojazer.GeneticAlgorithm;
 
 import java.io.Serializable;
@@ -28,7 +24,6 @@ public class Path implements Comparable<Path>, Serializable{
             path[i] = i+1;
         }
         length = numOfCities;
-        //rand = new Random();
     }
     
     public void updateCost(Costs c, int[] cities){

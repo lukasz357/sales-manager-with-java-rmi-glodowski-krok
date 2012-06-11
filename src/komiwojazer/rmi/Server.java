@@ -272,7 +272,6 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
 		if (System.getSecurityManager() == null) {
 			System.setSecurityManager(new RMISecurityManager());
 		}
-		//System.setProperty("java.security.policy", "permissions");
 		try {
 			Server s = new Server(9999);
 			s.setCrossProbability(0.6f);
@@ -282,11 +281,8 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
 			s.setPopulationCount(1000);
 			CityMap m = readMap("graph.txt");
 			s.setMap(m);
-//			Server stub =
-//	                (Server) UnicastRemoteObject.exportObject(s, 9999);
-	            Registry registry = LocateRegistry.createRegistry(1099);
-	            registry.rebind("ParallelGeneticServer", s);
-			//Naming.rebind("//localhost:9999/, s);
+            Registry registry = LocateRegistry.createRegistry(1099);
+            registry.rebind("ParallelGeneticServer", s);
 			System.out.println("Server started on port 9999");
 		} catch (RemoteException e) {
 			e.printStackTrace();

@@ -62,16 +62,10 @@ public class Dijkstra {
         return costs;
     }
 
-//    public double[] getLengths(){
-//        double[] lengths = new double[g.numberOfCities+1];
-//        for(City c : g.getAllCitiesCollection()){
-//            lengths[c.getID()]=c.getLength();
-//        }
-//        return lengths;
-//    }
-
    public class NodeDoesNotExist extends Exception {
-        public NodeDoesNotExist(String nodeName) {
+	private static final long serialVersionUID = 7822507443141630032L;
+
+		public NodeDoesNotExist(String nodeName) {
             super("Wierzchołek o nazwie " + nodeName + " nie istnieje.");
         }
     }
