@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package komiwojazer;
 
 import java.util.ArrayList;
@@ -24,8 +20,6 @@ import komiwojazer.Map.CityMap;
 public class MapUtil {
 
 
-    //private ArrayList<City> route;
-    //private Path geneticAlgResult;
     private Costs k;
     private CityMap map;
     private int[] cityTab; //tablica identyfikatorów miast
@@ -44,14 +38,6 @@ public class MapUtil {
             System.exit(1);
         }
     }
-
-//    public ArrayList<City> go(int generations, int count) {
-//        //associateCities();
-//        calculateRoute(generations, count);
-//        tranformPathsToListsOfCities();
-//        totalLen = policzDlTrasy(route, k);
-//        return route;
-//    }
     
     public int[] getNodeNumbers(){
     	return cityTab;
@@ -59,26 +45,6 @@ public class MapUtil {
     public Costs getCostArray(){
     	return k;
     }
-
-//    public void wypisz() {
-//        p("Ilość kierowców: " + drivers.size());
-//        p("przydzielone: ");
-//        for (int i = 0; i < associatedCities.length; i++) {
-//            p("Trasa " + i + ": ");
-//            for(int j = 0; j < associatedCities[i].size(); j++)
-//                System.out.print(associatedCities[i].get(j).getVal() + (j < associatedCities[i].size() - 1 ? "-->" : ""));
-//            p("");
-//        }
-//        p("Wyznaczone: ");
-//        for (int i = 0; i < routes.length; i++) {
-//            p("Trasa " + i + ": ");
-//            for(int j = 0; j < routes[i].size(); j++)
-//                System.out.print(routes[i].get(j).getVal() + (j < routes[i].size() - 1 ? "-->" : ""));
-//            p("");
-//        }
-//        p("");
-//
-//    }
 
     public double getTotalLength(){
     	return totalLen;
@@ -100,31 +66,15 @@ public class MapUtil {
     private void createCostArray(CityMap map) throws NodeDoesNotExist {
         Dijkstra dAlg = new Dijkstra(map);
         k = new Costs(map.numberOfCities + 1);
-        //dAlg.search(map.getCityByID(1).getVal());
-        //k.setCost(1,dAlg.getCosts());
-        //k.setLen(1, dAlg.getLengths());
-        //dAlg.resetData();
         for (City c : map.getAllCities()) {
             dAlg.search(c.getVal());
             k.setCost(c.getID(), dAlg.getCosts());
-            //k.setLen(c.getID(), dAlg.getLengths());
             dAlg.resetData();
         }
         k.print();
 
     }
 
-
-//    private void calculateRoute(int gen, int count) {
-//        geneticAlgResult = findShortestPath(map.getAllCities(), gen, count);
-//    }
-//
-//    private Path findShortestPath(List<City> cities, int gen, int count) {
-//        //algorytm genetyczny
-//        //argument cities jest przekształcany na tablice int (numery miast)
-//        GeneticAlg genAlg = new GeneticAlg(count, cityNumbers(cities), 0.03, 0.8, k);
-//        return genAlg.simulateNGenerations(gen);
-//    }
 
     // tworzy tablice numerów miast do alg. genetycznego
     private int[] cityNumbers(List<City> cities) {
