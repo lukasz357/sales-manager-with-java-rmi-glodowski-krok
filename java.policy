@@ -1,4 +1,0 @@
-grant {
-        permission java.net.SocketPermission "*:1099-", "accept, listen, connect, resolve";
-		permission java.io.FilePermission "<<ALL FILES>>", "read, write, execute, delete";
-};
