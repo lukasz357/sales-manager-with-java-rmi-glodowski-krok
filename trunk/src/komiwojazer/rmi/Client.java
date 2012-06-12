@@ -8,6 +8,7 @@ import java.rmi.registry.Registry;
 import java.util.List;
 import java.util.Random;
 
+import komiwojazer.Utils;
 import komiwojazer.GeneticAlgorithm.Costs;
 import komiwojazer.GeneticAlgorithm.GeneticAlg;
 import komiwojazer.GeneticAlgorithm.Path;
@@ -39,15 +40,11 @@ public class Client {
 		try {
 			
 			population = server.register(clientID);	
-			//p("Klient "+clientID+" laczy sie z serwerem");
 			while(population != null){
-				//p("Klient "+clientID+" rozpoczyna obliczenia");
 				GeneticAlg ga = new GeneticAlg(populationCount, nodes, mutationProp, crossingProp, costArray);
 				ga.setInitialPopulation(population);
 				ga.simulateNGenerations(tourGenerationCount);
 				List<Path> result = ga.getPopulation();
-				//Collections.sort(result);
-				//p("Klient "+clientID+" zwraca wynik");
 				population = server.newGeneration(clientID, result);
 			}
 		} catch (RemoteException e) {
@@ -60,7 +57,7 @@ public class Client {
 		
 		String name = "ParallelGeneticServer";
 		try {
-			Registry registry = LocateRegistry.getRegistry(1099);
+			Registry registry = LocateRegistry.getRegistry(Utils.registryPort);
 			ServerInterface server = (ServerInterface) registry.lookup(name);
 			new Client(server).start();
 		} catch (RemoteException e) {
