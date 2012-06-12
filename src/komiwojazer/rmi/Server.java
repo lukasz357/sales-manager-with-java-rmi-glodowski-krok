@@ -19,6 +19,7 @@ import java.util.Stack;
 import java.util.TreeMap;
 
 import komiwojazer.MapUtil;
+import komiwojazer.Utils;
 import komiwojazer.GeneticAlgorithm.Costs;
 import komiwojazer.GeneticAlgorithm.Path;
 import komiwojazer.Map.City;
@@ -51,17 +52,14 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
 
 	public Server() throws RemoteException {
 		super();
-		//init();
 	}
 
 	public Server(int port, RMIClientSocketFactory csf, RMIServerSocketFactory ssf) throws RemoteException {
 		super(port, csf, ssf);
-		//init();
 	}
 
 	public Server(int port) throws RemoteException {
 		super(port);
-		//init();
 	}
 
 	private void init() {
@@ -150,8 +148,6 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
 
 	@Override
 	public List<Path> register(int clientID) throws RemoteException {
-		// klient zapisuje sie do kolejki
-		//clientQueue.add(clientID);
 		try {
 			if(clientRegistry.size() == 0){
 				//jesli jest pierwszy to obudz watek
@@ -166,7 +162,6 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
 			}
 			// dostal pozwolenie to teraz zapisuje sie
 			// i w zamian dostaje pokolenie
-			//clientQueue.remove(new Integer(clientID));
 			clientRegistry.add(clientID);
 			p("Klient "+clientID+" podlaczony");
 			return currentGeneration;
@@ -175,11 +170,19 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
 		}
 	}
 
+	
+	/**
+	 * 
+	 *  klient zglasza wynik swojej pracy a w zamian otrzymuje
+	 *	populacje do kolejnych obliczen
+	 *
+	 */
+	
 	@Override
 	public List<Path> newGeneration(int clientID, List<Path> currentGeneration) throws RemoteException {
-		// tutaj klient zglasza wynik swojej pracy a w zamian otrzymuje
-		// populacje do kolejnych obliczen
+
 		clientResults.add(currentGeneration);
+		
 		// poinformuj watek zarzadzajacy
 		synchronized (notifier) {
 			notifier.notify();
@@ -203,8 +206,12 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
 		}
 	}
 	
-	//to jest watek ktory zarzadza klientami
 
+	/**
+	 * 
+	 * Watek zarządzający klientami
+	 *
+	 */
 	class Session extends Thread {
 		public void run() {
 			try {
@@ -273,15 +280,15 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
 			System.setSecurityManager(new RMISecurityManager());
 		}
 		try {
-			Server s = new Server(9999);
-			s.setCrossProbability(0.6f);
-			s.setMutationProbability(0.03f);
-			s.setGenerationsCount(10000); // Całkowita liczba pokoleń
-			s.setTourCount(10);           // liczba tur - na ile dzielona jest liczba pokoleń
-			s.setPopulationCount(1000);
-			CityMap m = readMap("graph.txt");
+			Server s = new Server(Utils.defaultPort);
+			s.setCrossProbability(Utils.crossPossibility);
+			s.setMutationProbability(Utils.mutationPossibility);
+			s.setGenerationsCount(Utils.generationsCount); // Całkowita liczba pokoleń
+			s.setTourCount(Utils.tourCount);           // liczba tur - na ile dzielona jest liczba pokoleń
+			s.setPopulationCount(Utils.populationCount);
+			CityMap m = readMap(Utils.defaultGraphPath);
 			s.setMap(m);
-            Registry registry = LocateRegistry.createRegistry(1099);
+            Registry registry = LocateRegistry.createRegistry(Utils.registryPort);
             registry.rebind("ParallelGeneticServer", s);
 			System.out.println("Server started on port 9999");
 		} catch (RemoteException e) {
